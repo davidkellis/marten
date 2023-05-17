@@ -26,17 +26,34 @@ module Marten
           # No-op
         end
 
-        def from_db(value) : Int32 | Int64 | Nil
+        # dke
+        # def from_db(value) : Int32 | Int64 | Nil
+        #   case value
+        #   when Int32 | Int64 | Nil
+        #     value.as?(Int32 | Int64 | Nil)
+        #   else
+        #     raise_unexpected_field_value(value)
+        #   end
+        # end
+
+        def from_db(value) : Int32 | Int64 | ::ULID | Nil
           case value
           when Int32 | Int64 | Nil
             value.as?(Int32 | Int64 | Nil)
+          when ::ULID
+            ::ULID.new(value.as(::String))
           else
             raise_unexpected_field_value(value)
           end
         end
 
-        def from_db_result_set(result_set : ::DB::ResultSet) : Int32 | Int64 | Nil
-          result_set.read(Int32 | Int64 | Nil)
+        # dke
+        # def from_db_result_set(result_set : ::DB::ResultSet) : Int32 | Int64 | Nil
+        #   result_set.read(Int32 | Int64 | Nil)
+        # end
+
+        def from_db_result_set(result_set : ::DB::ResultSet) : Int32 | Int64 | ::ULID | Nil
+          result_set.read(Int32 | Int64 | ::ULID | Nil)
         end
 
         # Returns a boolean indicating whether the column is a foreign key.
@@ -69,6 +86,20 @@ module Marten
           )
         end
 
+        # dke
+        # def to_db(value) : ::DB::Any
+        #   case value
+        #   when Nil
+        #     nil
+        #   when Int32, Int64
+        #     value
+        #   when Int8, Int16
+        #     value.as(Int8 | Int16).to_i32
+        #   else
+        #     raise_unexpected_field_value(value)
+        #   end
+        # end
+
         def to_db(value) : ::DB::Any
           case value
           when Nil
@@ -77,6 +108,8 @@ module Marten
             value
           when Int8, Int16
             value.as(Int8 | Int16).to_i32
+          when ::ULID
+            value.to_s
           else
             raise_unexpected_field_value(value)
           end
