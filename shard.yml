@@ -16,6 +16,8 @@ dependencies:
     github: crystal-i18n/i18n
   msgpack:
     github: crystal-community/msgpack-crystal
+  ulid:
+    github: davidkellis/ulid
 
 development_dependencies:
   ameba:

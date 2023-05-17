@@ -11,6 +11,7 @@ require "./field/int"
 require "./field/string"
 require "./field/text"
 require "./field/uuid"
+require "./field/ulid"
 
 require "./field/many_to_many"
 require "./field/many_to_one"
@@ -109,6 +110,7 @@ module Marten
       register "string", String
       register "text", Text
       register "uuid", UUID
+      register "ulid", ULID
     end
   end
 end
